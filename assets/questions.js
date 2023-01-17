@@ -22,3 +22,9 @@ incorrectAns.className = 'user-answer'
 incorrectAns.textContent = 'Previous Question: Wrong!'
 
 //create question objects
+var questionList = [
+    { question:
+
+    }
+
+]
