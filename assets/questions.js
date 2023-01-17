@@ -64,3 +64,115 @@ questionBtnThree.id = 'question-btns'
 var questionBtnFour =document.createElement('button'); //button element
 questionBtnFour.className = 'question-btn-four'
 questionBtnFour.id ='question-btns'
+
+//highscore input element
+var scoreForm = document.createElement('form');
+
+//highschool initial input
+var userScore = document.createElement('input');
+userScore.className = 'user-score';
+userScore.type = 'text';
+userScore.placeholder = 'Enter Initials';
+spaceForm.appendChild(userScore);
+
+//highschore submit button
+var scoreBtn = document.createElement('button');
+scoreBtn.className ='submit-btn'
+scoreBtn.type = 'submit'
+scoreBtn.textContent = 'Submit Highscore'
+scoreForm.appendChild(scoreBtn);
+
+//go back/restart quiz button
+var goBackBtn = document.createElement('button'); //go back button
+goBackBtn.className = ('go-back')
+goBackBtn.textContent = 'Go Back'
+
+//clear highscores button
+var clearScoreBtn = document.createElement('button'); //clear highscore button
+clearScoreBtn.className = 'clear-score'
+clearScoreBtn.textContent = 'Clear Highscores'
+
+var startGame = function(){
+    timeLeft = 75; //timer to initial value
+    mainHead.remove();//removes initial main heading
+    mainP.remove();//removes initial main paragraph
+    startBtnEl.remove();//remove start button
+
+
+timeInt = setInterval(function(){ . //declare global variable for timer
+if (timeLeft > 0) {
+    timerEl.textContent ='Time' + timeLeft; //write timeLeft to the timer element
+    timeLeft--; //decrement timer every interval
+
+} else {
+    timerEl.textContent = ''; //remove timer from screen
+    clearInterval(timeInt); //clear timer
+    stopGame();
+}
+
+}, 1000);
+
+createQuestion();
+
+}
+
+var createQuestion = function() { //generates a question from the list
+    questionHead.textContent = questionList[questionCount].question;
+    pageContentEl.appendChild(questionHead);//add h1 to page (question)
+
+    questionDiv.textContent ='';
+    pageContentEl.appendChild(questionDiv); //add ol to page (container)
+
+    questionBtnOne.textContent = questionList[questionCount].answerOne;
+    questionDiv.appendChild(questionBtnOne); //add button to ol (option 1)
+
+    questionBtnTwo.textContent = questionList[questionCount].answerTwo;
+    questionDiv.appendChild(questionBtnTwo); //add button to ol (option 2)
+
+    questionBtnThree.textContent = questionList[questionCount].answerThree;
+    questionDiv.appendChild(questionBtnThree); //add button to ol (option 3)
+
+    questionBtnFour.textContent = questionList[questionCount].answerFour;
+    questionDiv.appendChild(questionBtnFour); //add button to ol (option 4)
+
+
+
+//Click listeners
+var questionOneBtnEl= document.querySelector('.question-btn-one');
+questionOneBtnEl.addEventListener('click', newQuestion);
+var questionTwoBtnEl =document.querySelector('.question-btn-two');
+questionTwoBtnEl.addEventListener('click', newQuestion);
+var questionThreeBtnEl = document.querySelector('.question-btn-three');
+questionThreeBtnEl.addEventListener('click', newQuestion);
+var questionFourBtnEl = document.querySelector('.question-btn-four');
+questionFourBtnEl.addEventListener('click', newQuestion);
+}
+
+var newQuestion = function(event){
+    correctAns.remove();
+    incorrectAns.remove();
+
+var btnPressed = event.target; //define btnPressed as whichever button was clicked 
+if (btnPressed.className === questionList[questionCount].solution && questionCount < questionList.length -1)
+{ //check if the button is the same as the solution
+    questionCount++;
+    createQuestion();
+    pageContentEl.appendChild(correctAns);
+}  else if (btnPressed.className != questionList[questionCount].solution && questionCount < questionList.length -1)
+{
+    timeLeft -= 10;
+    questionCount++;
+    createQuestion();
+    pageContentEl.appendChild(correctAns);
+    return;
+} else if (btnPressed.className === questionList[questionCount].solution) {//check if it is the last question
+    stopGame();
+    pageContentEl.appendChild(correctAns);
+    return;
+} else {
+    timeLeft -=10;
+    stopGame();
+    pageContentEl.appendChild(incorrectAns);
+    return;
+   }
+}
