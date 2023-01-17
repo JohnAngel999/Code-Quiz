@@ -96,6 +96,34 @@ ol {
 }
 
 .user-answer {
-    
+    margin: 10px auto;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-style: italic;
+    color: gray;
+    border-top: 2px solid lightgray;
+
+
 }
+
+.user-score {
+    margin: 10px auto;
+    padding: 5px;
+    width: 50%;
+    display: block;
+}
+
+.score-list,
+.score-list::marker{
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+    background-color: gray;
+    border-radius: 10px;
+}
+
+
+
+
+
 
