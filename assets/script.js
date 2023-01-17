@@ -176,3 +176,72 @@ if (btnPressed.className === questionList[questionCount].solution && questionCou
     return;
    }
 }
+
+function stopGame() { //once the timer hits zero or all questions have been answered, run this function
+    clearInterval(timeInt); //stop time
+    if (timeLeft >=0 ) { //make sure time does not go negative
+        timerEl.textContent = 'Time' + timeLeft;
+
+    } else {
+        timeLeft = 0;
+        timerEl.textContent = 'Time:' + timeLeft;
+    }
+   
+
+    questionHead.textContent = 'All Done!';
+    questionDiv.textContent = 'Your final score is ' + timeLeft;
+    questionDiv.appendChild(scoreForm);
+    document.addEventListener('submit', function(event) {
+        event.preventDefault();
+        localStorage.setItem(userScore.value, this.timeLeft);
+        highScore();
+    });
+
+}
+  var highScore =function(){
+    try {
+        clearInterval(timeInt);
+    }catch{}
+    headerEL.remove(); //removes top header
+    mainHead.remove(); //removes initial main heading
+    mainP.remove(); //removes initial main paragraph
+    startBtnEl.remove(); //removes start button
+    correctAns.remove();
+    incorrectAns.remove();
+
+    pageContentEl.appendChild(questionHead);
+    pageContentEl.appendChild(questionDiv);
+
+    questionHead.textContent = 'High Scores'
+    questionDiv.textContent = ''
+    var highScoreList = [];
+    for (let i = 0; i < localStorage.length; i++) {// loop through high scores
+        highScoreList.push(localStorage.getItem(localStorage.key(i)) + ' - ' + localStorage.key(i)); //get highscore key and value
+        highScoreList.sort(),reverse(); //sort highscores with highest on top
+
+    }
+
+    for (let i = 0; i < highScoreList.length; i++) { //loop to add highscores to screen
+        var highScoreListItem = document.createElement('li') //turn highscore into list item
+        highScoreListItem.className = 'score-list'
+        highScoreListItem.textContent = highScoreList[i]; //add content to list item
+        questionDiv.append(highScoreListItem); //add list items to ol
+    }
+
+    pageContentEl.appendChild(goBackBtn);
+    pageContentEl.appendChild(clearScoreBtn);
+
+    goBackBtn.addEventListener('click', goBack);
+    clearScoreBtn.addEventListener('click', clearScore);
+  }
+
+  var goBack =function() {
+    window.location.reload();
+
+  }
+
+  var clearScore = function() {
+    localStorage.clear();
+    alert('The high scores have been cleared');
+    window.location.reload();
+  }
